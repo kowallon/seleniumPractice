@@ -36,11 +36,15 @@ public class CommonMethods extends SeleniumIntro {
 	public static void checkIfXPathElementHasCorrectText(String selector, String assertedText) {
 		String extractedText = driver.findElement(By.xpath(selector)).getText();
 		System.out.println(extractedText);
-		Assert.assertEquals(extractedText, assertedText, assertedText);
+		Assert.assertEquals(extractedText, assertedText, "Text is not correct");
 	}
 	
 	public static void clickXPathElement(String selector) {
 		driver.findElement(By.xpath(selector)).click();
+	}
+	
+	public static void checkIfElementIsDisplayed(String selector) {
+		Assert.assertTrue(driver.findElement(By.xpath(selector)).isDisplayed());
 	}
 		
 }

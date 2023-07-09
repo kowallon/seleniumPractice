@@ -2,11 +2,16 @@
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.Keys;
+
 
 public class SeleniumIntro {
 	
@@ -22,11 +27,15 @@ public class SeleniumIntro {
 		
 		//System.setProperty("webdriver.chrome.driver", "src/resources/chromedriver.exe");
 		//Can be commented because of Selenium Manager
-		addBook();
+		//addBook();
 		
 		//selects();
 		
 		//forms();
+		//checboxes();
+		
+		alerts();
+		
 		//driver.quit();		
 	}
 
@@ -69,10 +78,17 @@ public class SeleniumIntro {
 		
 	}
 	
-	public static void forms(){
-		
-			
+	public static void forms() {			
 		driver.get(formsUrl);
+		
+		//contact data
+		driver.findElement(By.id("firstName")).sendKeys("Henry");
+		driver.findElement(By.id("lastName")).sendKeys("Jones Jr.");
+		driver.findElement(By.id("userEmail")).sendKeys("IndianaJones@MarshallColleage.com");
+		driver.findElement(By.xpath("(//div[@class='custom-control custom-radio custom-control-inline'])[1]")).click();
+		driver.findElement(By.id("userNumber")).sendKeys("1992331882");
+		driver.findElement(By.id("subjectsInput")).sendKeys("history");
+		driver.findElement(By.id("subjectsInput")).sendKeys(Keys.ENTER);
 		
 		//Calendar
 		driver.findElement(By.id("dateOfBirthInput")).click();
@@ -88,13 +104,12 @@ public class SeleniumIntro {
         CommonMethods.waitForElement();
         driver.findElement(By.xpath("(//select[@class='react-datepicker__month-select']/option)["+randomMonth+"]")).click();
         //randomDay
-        int randomWeek = random.nextInt(7) + 1;
+        int randomWeek = random.nextInt(5) + 1;
         int randomDay = random.nextInt(7) + 1;
         driver.findElement(By.xpath("(//div[@class='react-datepicker__week'])["+randomWeek+"]/div["+randomDay+"]")).click();
 		CommonMethods.waitSeconds(3);
-		
+				
 		//Checkboxes
-        
 		List<WebElement> checkboxes = driver.findElements(By.xpath("//label[contains(@for, 'hobbies-checkbox')]"));
 		for(WebElement checkbox : checkboxes) {
 			if(!checkbox.isSelected()) {
@@ -116,5 +131,30 @@ public class SeleniumIntro {
 		CommonMethods.waitSeconds(1);
 		driver.findElement(By.xpath("(//div[.='Delhi'])")).click();
 		
+		driver.findElement(By.id("submit")).click();
+		CommonMethods.waitForElement();
+		Assert.assertTrue(driver.findElement(By.className("modal-content")).isDisplayed());
+		
+	}
+	
+	public static void checboxes() {		
+		driver.get("https://rahulshettyacademy.com/AutomationPractice/");
+		WebElement check = driver.findElement(By.xpath("(//input[@id='checkBoxOption1'])[1]"));
+		List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox']"));
+		System.out.println("num of checkboxes: " + checkboxes.size());
+		check.click();
+		Assert.assertEquals(check.isSelected(), true);
+		check.click();
+		Assert.assertEquals(check.isSelected(), false);
+	}
+	
+	public static void alerts() {
+		driver.get("https://demoqa.com/alerts");
+		driver.findElement(By.id("alertButton")).click();
+		CommonMethods.waitForElement();
+		Alert alert = driver.switchTo().alert();
+		alert.accept();
+		
 	}
 }
+
